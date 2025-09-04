@@ -1,5 +1,5 @@
 import { Router } from "express"
-import {createExampleCustomID,createElements,createInventory,deleteInventory,deleteUser,editInventory,getAccessibleInventories,getCategory,getInventories,getInventoryByID,getInventoryProps,getOwnInventories,getUsers,logIn,logInByGoogle,regByGoogle,createCustomID,revokeAdmin,setAdmin,helloworld,getInventory,registrationByEmail,saveCustomId} from "../controllers/Controller.js"
+import {createExampleCustomID,createElements,createInventory,deleteInventory,deleteUser,editInventory,getAccessibleInventories,getCategory,getInventories,getInventoryByID,getInventoryProps,getOwnInventories,getUsers,logIn,logInByGoogle,regByGoogle,createCustomID,revokeAdmin,setAdmin,helloworld,getInventory,registrationByEmail,saveCustomId} from "../controllers/controller.js"
 import passport from "passport"
 import checkToken from "../middlewares/token.js"
 
