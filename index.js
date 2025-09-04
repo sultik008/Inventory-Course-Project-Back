@@ -5,7 +5,7 @@ import passport from "passport";
 import GitHubStrategy from 'passport-github2'
 import { PrismaClient } from './generated/prisma/index.js'
 import dotenv  from "dotenv";
-import { generateToken } from "./controllers/Controller.js";
+import { generateToken } from "./controllers/controller.js";
 
 
 
