@@ -21,7 +21,7 @@ router.put("/inventory/edit" , checkToken , editInventory)
 router.get("/category" , getCategory)
 router.get("/inventory/common", getInventories)
 router.delete("/inventory/delete", checkToken , deleteInventory)
-router.get("/auth/github/callback",  passport.authenticate("github", { successRedirect: "http://localhost:3000/", failureMessage: true  ,  failureRedirect: "http://localhost:3000/registration" ,}) , (req , res) => {try {
+router.get("/auth/github/callback",  passport.authenticate("github", { successRedirect: "https://inventory-course-projec-front.onrender.com/", failureMessage: true  ,  failureRedirect: "https://inventory-course-projec-front.onrender.com/registration" ,}) , (req , res) => {try {
     const {user , token} = req.body;
     res.redirect(`https://localhost:3000/?token=${token}`);
     console.log(user , token );
