@@ -45,7 +45,7 @@ passport.use(new GitHubStrategy({
         isadmin: false,
       }})
       token = generateToken(user);
-      done(null , {exist , token})
+      return done(null, exist, { token });
     }
     else return done(null , false , {message: "User has already been registered"})
     } catch (error) {
