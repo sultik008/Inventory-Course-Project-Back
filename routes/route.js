@@ -1,5 +1,5 @@
 import { Router } from "express"
-import {createExampleCustomID,createElements,createInventory,deleteInventory,deleteUser,editInventory,getAccessibleInventories,getCategory,getInventories,getInventoryByID,getInventoryProps,getOwnInventories,getUsers,logIn,logInByGoogle,regByGoogle,createCustomID,revokeAdmin,setAdmin,helloworld,getInventory,registrationByEmail,saveCustomId} from "../controllers/controller.js"
+import {createExampleCustomID,createElements,createInventory,deleteInventory,deleteUser,editInventory,getAccessibleInventories,getCategory,getInventories,getInventoryByID,getInventoryProps,getOwnInventories,getUsers,logIn,logInByGoogle,regByGoogle,revokeAdmin,setAdmin,helloworld,getInventory,registrationByEmail,saveCustomId} from "../controllers/controller.js"
 import passport from "passport"
 import checkToken from "../middlewares/token.js"
 
@@ -8,10 +8,9 @@ const router = Router()
 router.post("/regbygoogle", regByGoogle)
 router.post("/loginbygoogle", logInByGoogle)
 router.post("/login", logIn)
-router.post("/inventory", checkToken , createInventory)
-router.post("/elements" , createElements)
+router.post("/inventory/create", checkToken , createInventory)
+router.post("/elements" ,checkToken , createElements)
 router.post("/examplecustomid" , createExampleCustomID)
-router.post("/customid", createCustomID)
 router.post("/customid/save" , saveCustomId)
 router.get("/auth/github", passport.authenticate("github", { scope: "user:email"}))
 router.get("/users", getUsers)
@@ -22,10 +21,10 @@ router.put("/inventory/edit" , editInventory)
 router.get("/category" , getCategory)
 router.get("/inventory/common", getInventories)
 router.delete("/inventory/delete", deleteInventory)
-router.get("/auth/github/callback",  passport.authenticate("github", { failureRedirect: "/login"}) , (req , res) => {try {
-    const {user , token} = req;
-    res.redirect(`http://localhost:3000/?token=${token}`);
-    console.log(user , token);
+router.get("/auth/github/callback",  passport.authenticate("github", { successRedirect: "http://localhost:3000/", failureMessage: true  ,  failureRedirect: "http://localhost:3000/registration" ,}) , (req , res) => {try {
+    const {user , token} = req.body;
+    res.redirect(`https://localhost:3000/?token=${token}`);
+    console.log(user , token );
   } catch (error) {
     console.log(error);
     res.json(error);

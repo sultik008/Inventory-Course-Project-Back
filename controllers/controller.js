@@ -22,6 +22,7 @@ export function helloworld(req , res) {
 export async function createInventory(req , res) {
     try {
         console.log("Hello world")
+        
         const { owner , isPublic , description, image , field1 , field2 , field3, category , name , ownerName } = req.body
         const inventory  = await prisma.inventory.create({data: {owner: owner , public: isPublic , description: description , image: image , field1: field1 , field2: field2 , field3: field3 , category: category , name: name , ownername: ownerName , customid: ``}})
         let usersinvs
@@ -31,7 +32,7 @@ export async function createInventory(req , res) {
         res.json(inventory)
     } catch (error) {
         console.log(error?.message)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function regByGoogle(req , res) {
@@ -40,7 +41,7 @@ export async function regByGoogle(req , res) {
         const googleUser = await getUserData(credential);
         const exists = await prisma.users.findFirst({where:{email: googleUser.email}})
         if (exists) {
-            res.status(400).json({succes: false ,error: "user has already registred"})
+            res.json({error: {message:"Email has already been registred , try to login"}})
         }
         const user = await prisma.users.create({
            data: {
@@ -55,7 +56,7 @@ export async function regByGoogle(req , res) {
         console.log(user , '\n' , token)
     } catch (error) {
         console.log(error?.message)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function getAccessibleInventories(req , res) {
@@ -68,7 +69,7 @@ export async function getAccessibleInventories(req , res) {
         res.json(inventories)
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function getInventory(req , res) {
@@ -78,7 +79,7 @@ export async function getInventory(req , res) {
         res.json(inv)
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function logInByGoogle(req , res) {
@@ -90,26 +91,15 @@ export async function logInByGoogle(req , res) {
         if(!user){
             res.json({
                 message: "User hasn’t registered yet",
-                redirect: "http://localhost:3000/registration"
+                redirect: "https://inventory-course-projec-front.onrender.com/registration"
             })
         }
         console.log(user)
         const token = generateToken(user)
-        res.json({token , user , redirect: "http://localhost:3000/main" })
+        res.json({token , user , redirect: "https://inventory-course-projec-front.onrender.com/main" })
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
-    }
-}
-export async function saveCustomId(req , res) {
-    try {
-        const {inventoryid , format, formatValues} = req.body
-        const customID = generateCustomID(format  , formatValues)
-        const inventory = await prisma.inventory.update({where: {inventoryid: inventoryid} , data: {customid: customID}})
-        res.json(inventory)
-    } catch (error) {
-        console.log(error?.message)
-        res.status(500).json(error?.message)
+        res.status(500).json({error})
     }
 }
 export async function registrationByEmail(req , res) {
@@ -123,10 +113,10 @@ export async function registrationByEmail(req , res) {
             const token = generateToken(res)
             res.json({token})
         }
-        else res.json(error("user has already been registered"))
+        else res.json({error: {message: "user has already been registered"}})
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function logIn(req , res) {
@@ -134,7 +124,7 @@ export async function logIn(req , res) {
         const { email , password } = req.body
         const result = await prisma.users.findFirst({where: email})
         if(!result){
-            res.redirect("http://localhost:3000/registration").json("User is not authorized")
+            res.redirect("https://inventory-course-projec-front.onrender.com/registration").json({error: {message: "User is not authorized"}})
         }
         else {
             password = crypto.createHash("sha256")
@@ -145,7 +135,7 @@ export async function logIn(req , res) {
         }
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function getUsers(req , res) {
@@ -154,7 +144,7 @@ export async function getUsers(req , res) {
         res.json(result)
     } catch (error) {
         console.log(error?.message)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function setAdmin(req , res) {
@@ -164,7 +154,7 @@ export async function setAdmin(req , res) {
         res.json(result)
     } catch (error) {
         console.log(error?.message)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function revokeAdmin(req , res) {
@@ -174,7 +164,7 @@ export async function revokeAdmin(req , res) {
         res.json(result)
     } catch (error) {
         console.log(error?.message)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function getInventories(req , res) {
@@ -183,7 +173,7 @@ export async function getInventories(req , res) {
         res.json(result)
     } catch (error) {
         console.log(error?.message)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function deleteInventory(req , res) {
@@ -201,7 +191,7 @@ export async function deleteInventory(req , res) {
         res.json(inventory)
     } catch (error) {
         console.log(error?.message)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function deleteUser(req , res) {
@@ -215,7 +205,7 @@ export async function deleteUser(req , res) {
         res.json("deleted")
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 async function getUserData(credential) {
@@ -249,7 +239,7 @@ export async function getCategory(req , res) {
         const category = await prisma.category.findMany()
         res.json(category)
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function getOwnInventories(req , res) {
@@ -259,7 +249,7 @@ export async function getOwnInventories(req , res) {
         res.json(inventories)
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function editInventory(req , res) {
@@ -270,14 +260,16 @@ export async function editInventory(req , res) {
         res.json(edited)
     } catch (error) {
         console.log(JSON.stringify(error))
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function createElements(req , res) {
     try {
         const { inventoryid , image , fieldvalue1 , fieldvalue2 , fieldvalue3 , createdby , ownername} = req.body
-        const customid = await prisma.inventory.findFirst({where: {inventoryid: inventoryid}})
-        const item = await prisma.items.create({data: {inventoryid: inventoryid , image: image , fieldvalue1: fieldvalue1 , fieldvalue2: fieldvalue2 , fieldvalue3: fieldvalue3 , createdby: createdby , customid: `${customid.customid}` , ownername: ownername }, include: {users: {select: {id: true}}}})
+        const inv = await prisma.inventory.findFirst({where: {inventoryid: inventoryid}})
+        console.log(inv.customid)
+        const customID = generateCustomID(inv.customid)
+        const item = await prisma.items.create({data: {inventoryid: inventoryid , image: image , fieldvalue1: fieldvalue1 , fieldvalue2: fieldvalue2 , fieldvalue3: fieldvalue3 , createdby: createdby , customid: customID , ownername: ownername }, include: {users: {select: {id: true}}}})
         res.json(item)
     } catch (error) {
         console.log(error)
@@ -301,7 +293,7 @@ export async function getInventoryByID(req , res) {
         res.json(inventory)
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 export async function getInventoryProps(req , res) {
@@ -314,7 +306,7 @@ export async function getInventoryProps(req , res) {
         }
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
 function generateExampleCustomID(format , formatValues) {
@@ -355,13 +347,11 @@ function generateExampleCustomID(format , formatValues) {
     const customID = gathered.join('-')
     return customID
 }
-function generateCustomID(format , formatValues) {
+function generateCustomID(format) {
     const gathered = []
+    format = JSON.parse(format)
     for (let i = 0; i < format.length; i++) {
-        if (format[i] == 'Fixed') {
-            gathered.push(`${formatValues[i]}`)
-        }
-        else if (format[i] == '20-bit Random') {
+        if (format[i] == '20-bit Random') {
             const block = crypto.randomBytes(2.5).toString('hex')
             gathered.push(block)
         }
@@ -389,8 +379,12 @@ function generateCustomID(format , formatValues) {
             const block = randomInt(0,100000)
             gathered.push(block)
         }
+        else{
+            gathered.push(`${format[i]}`)
+        }
     }
     const customID = gathered.join('-')
+    console.log(customID)
     return customID
 }
 export async function createExampleCustomID(req ,res) {
@@ -400,17 +394,29 @@ export async function createExampleCustomID(req ,res) {
         console.log(customID)
         res.json(customID)
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({error})
     }
 }
-export async function createCustomID(req ,res) {
+export async function saveCustomId(req , res) {
     try {
-        const {format , formatValues} = req.body
-        const customID = generateCustomID(format  , formatValues)
+        let {inventoryid , format, formatValues} = req.body
+        let customID = generateCutomIDFormat(format  , formatValues)
+        customID = JSON.stringify(customID)
         console.log(customID)
-        res.json(customID)
+        const inventory = await prisma.inventory.update({where: {inventoryid: inventoryid} , data: {customid: customID}})
+        res.json(inventory)
     } catch (error) {
-        res.status(500).json(error)
+        console.log(error?.message)
+        res.status(500).json(error?.message)
     }
 }
+function generateCutomIDFormat(format , formatValues) {  
 
+    for (let i = 0; i < format.length; i++) {
+        if (format[i] == "Fixed") {
+            format[i] = formatValues[0]
+        }
+    }
+    console.log(format)
+    return format
+}

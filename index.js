@@ -21,12 +21,13 @@ app.use('/api' , router)
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:5000/api/auth/github/callback",
+    callbackURL: "https://inventory-course-project-back-production.up.railway.app/api/auth/github/callback",
     scope: ["user:email"]
   },
 
   async function(accessToken, refreshToken, profile, done) {
-    const res = await fetch("https://api.github.com/user/emails" , {
+    try {
+          const res = await fetch("https://api.github.com/user/emails" , {
       headers: {
         "Authorization": `Bearer ${accessToken}`,
         "User-Agent": "Inventory"
@@ -46,7 +47,10 @@ passport.use(new GitHubStrategy({
       token = generateToken(user);
       done(null , {exist , token})
     }
-    else done(null)
+    else return done(null , false , {message: "User has already been registered"})
+    } catch (error) {
+      done(error)
+    }
     
   } 
 ));

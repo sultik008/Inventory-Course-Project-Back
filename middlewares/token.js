@@ -1,15 +1,29 @@
-import jwt from 'jsonwebtoken'
+import { PrismaClient } from '../generated/prisma/index.js'
+import jwt from "jsonwebtoken";
 
-export default function checkToken(req, res, next){
-    try {
-        const token = req.headers[authorization]
-        if (!token) {
-            res.status(401).json("No token")
-        }
-        const result = jwt.verify(token , process.env.JWT_SECRET)
-        console.log(token , result)
-        next()
-    } catch (error) {
-        res.status(403).json({ message: 'Invalid token' });
+
+const prisma = new PrismaClient()
+export default async function checkToken(req, res, next) {
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      res.json({ error: { message: "No token" } });
     }
+    const decoded = jwt.decode(token)
+    const exist = await prisma.users.findFirst({where: {id: decoded.id}})
+    if (!exist) {
+        return res.json({ error: { message: "User not authorized" } });
+    }
+    const result = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(result);
+    next();
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      res.json({error: { message: "Token expired" }});
+    } else if (err.name === "JsonWebTokenError") {
+      res.json({error: { message: "Invalid token" }});
+    } else {
+      res.json({error: { message: "Auth error" }});
+    }
+  }
 }
