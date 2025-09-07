@@ -4,6 +4,10 @@ import passport from "passport"
 import checkToken from "../middlewares/token.js"
 
 const router = Router()
+const urlglobalback = "https://inventory-course-project-back-production.up.railway.app/api"
+const urllocalback = "http://localhost:5000/api" 
+const urlglobalfront = "https://inventory-course-projec-front.onrender.com"
+const urllocalfront = "http://localhost:3000" 
 
 router.post("/regbygoogle", regByGoogle)
 router.post("/loginbygoogle", logInByGoogle)
@@ -21,10 +25,10 @@ router.put("/inventory/edit" , checkToken , editInventory)
 router.get("/category" , getCategory)
 router.get("/inventory/common", getInventories)
 router.delete("/inventory/delete", checkToken , deleteInventory)
-router.get("/auth/github/callback",  passport.authenticate("github", { successRedirect: "https://inventory-course-projec-front.onrender.com/", failureMessage: true  ,  failureRedirect: "https://inventory-course-projec-front.onrender.com/registration" ,}) , (req , res) => {try {
-    const {user , token} = req
-    res.redirect(`https://localhost:3000/?token=${token}`);
+router.get("/auth/github/callback",  passport.authenticate("github", { successRedirect: `${urlglobalfront}`, failureMessage: true  ,  failureRedirect: `${urlglobalfront}/registration` ,}) , (req , res) => {try {
+    const {user , token} = req.body
     console.log(user , token );
+    res.redirect(`${urlglobalfront}/?token=${token}`);
   } catch (error) {
     console.log(error);
     res.json(error);

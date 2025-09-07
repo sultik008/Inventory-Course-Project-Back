@@ -7,6 +7,9 @@ import { PrismaClient } from "./generated/prisma/index.js";
 import dotenv from "dotenv";
 import { generateToken } from "./controllers/controller.js";
 
+const urlglobal = "https://inventory-course-project-back-production.up.railway.app/api"
+const urllocal = "http://localhost:5000/api"
+
 dotenv.config();
 const prisma = new PrismaClient(),
   GITHUB_CLIENT_ID = "Ov23liOSdnMtiVKXGyAA",
@@ -24,7 +27,7 @@ passport.use(
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
       callbackURL:
-        "https://inventory-course-project-back-production.up.railway.app/api/auth/github/callback",
+        `${urllocal}/auth/github/callback`,
       scope: ["user:email"],
     },
 
