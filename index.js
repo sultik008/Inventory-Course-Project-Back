@@ -53,12 +53,14 @@ passport.use(
             },
           });
           
-          user.token = generateToken()
           console.log(user)
+          user.token = generateToken()
+          console.log(user , "user 57 index.js ")
           return done(null, user,);
         }
-        exist.token = generateToken()
         console.log(exist)
+        exist.token = generateToken()
+        console.log(exist , "exist 61 index.js ")
         return done(null, exist);
       } catch (error) {
         return done(error);
