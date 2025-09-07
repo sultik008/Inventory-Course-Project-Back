@@ -41,8 +41,8 @@ passport.use(
         });
         const emails = await res.json();
         const email = emails[0].email;
-        const exist = await prisma.users.findFirst({ where: { email: email } });
-        let user , token = generateToken(user);
+        let exist = await prisma.users.findFirst({ where: { email: email } });
+        let user
         if (!exist) {
           user = await prisma.users.create({
             data: {
@@ -52,9 +52,11 @@ passport.use(
               isadmin: false,
             },
           });
-          return done(null, user, { token });
+          user.token = generateToken()
+          return done(null, user,);
         }
-        return done(null, exist, { token});
+        exist.token = generateToken()
+        return done(null, exist);
       } catch (error) {
         return done(error);
       }

@@ -26,7 +26,8 @@ router.get("/category" , getCategory)
 router.get("/inventory/common", getInventories)
 router.delete("/inventory/delete", checkToken , deleteInventory)
 router.get("/auth/github/callback",  passport.authenticate("github", { successRedirect: `${urlglobalfront}`, failureMessage: true  ,  failureRedirect: `${urlglobalfront}/registration` ,}) , (req , res) => {try {
-    const {user , token} = req
+    const user = req.user
+    const token = user?.token
     console.log(user , token );
     res.redirect(`${urlglobalfront}/?token=${token}`);
   } catch (error) {
