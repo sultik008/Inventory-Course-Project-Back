@@ -55,12 +55,14 @@ passport.use(
           
           console.log(user)
           user.token = generateToken()
-          console.log(user , "user 57 index.js ")
+          console.log(user)
+          console.log("user 57 index.js ")
           return done(null, user,);
         }
         console.log(exist)
         exist.token = generateToken()
-        console.log(exist , "exist 61 index.js ")
+        console.log(exist)
+        console.log("exist 61 index.js ")
         return done(null, exist);
       } catch (error) {
         return done(error);
