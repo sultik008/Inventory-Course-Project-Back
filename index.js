@@ -27,7 +27,7 @@ passport.use(
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
       callbackURL:
-        `${urllocal}/auth/github/callback`,
+        `${urlglobal}/auth/github/callback`,
       scope: ["user:email"],
     },
 
