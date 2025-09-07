@@ -52,10 +52,13 @@ passport.use(
               isadmin: false,
             },
           });
+          
           user.token = generateToken()
+          console.log(user)
           return done(null, user,);
         }
         exist.token = generateToken()
+        console.log(exist)
         return done(null, exist);
       } catch (error) {
         return done(error);

@@ -28,7 +28,7 @@ router.delete("/inventory/delete", checkToken , deleteInventory)
 router.get("/auth/github/callback",  passport.authenticate("github", { successRedirect: `${urlglobalfront}`, failureMessage: true  ,  failureRedirect: `${urlglobalfront}/registration` ,}) , (req , res) => {try {
     const user = req.user
     const token = user?.token
-    console.log(user , token );
+    console.log(user , token , "router 31stroka");
     res.redirect(`${urlglobalfront}/?token=${token}`);
   } catch (error) {
     console.log(error);
