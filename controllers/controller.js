@@ -277,6 +277,26 @@ export async function createElements(req , res) {
         res.json({error: error})
     }
 }
+export async function deleteElement(req ,res) {
+    try {
+        const {itemid} = req.params
+        const result = await prisma.items.delete({where: {id: itemid}})
+        res.json(result)
+    } catch (error) {
+        console.log(error)
+        res.json({error: error})
+    }
+}
+export async function editItem(req ,res) {
+    try {
+        const {itemid , customid , fieldvalue1 ,fieldvalue2 , fieldvalue3} = req.body
+        const result = await prisma.items.update({where: {id: itemid} , data: {customid: customid , fieldvalue1: fieldvalue1 , fieldvalue2: fieldvalue2 , fieldvalue3: fieldvalue3}})
+        res.json(result)
+    } catch (error) {
+        console.log(error)
+        res.json({error: error})
+    }
+}
 export async function getItem(req ,res) {
     try {
         const {id} = req.params

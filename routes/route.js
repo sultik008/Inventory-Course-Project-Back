@@ -1,5 +1,5 @@
 import { Router } from "express"
-import {createExampleCustomID,createElements,createInventory,deleteInventory,deleteUser,editInventory,getAccessibleInventories,getCategory,getInventories,getInventoryByID,getInventoryProps,getOwnInventories,getUsers,logIn,logInByGoogle,regByGoogle,revokeAdmin,setAdmin,helloworld,getInventory,registrationByEmail,saveCustomId, getItem} from "../controllers/controller.js"
+import {createExampleCustomID,createElements,createInventory,deleteInventory,deleteUser,editInventory,getAccessibleInventories,getCategory,getInventories,getInventoryByID,getInventoryProps,getOwnInventories,getUsers,logIn,logInByGoogle,regByGoogle,revokeAdmin,setAdmin,helloworld,getInventory,registrationByEmail,saveCustomId, getItem, deleteElement, editItem} from "../controllers/controller.js"
 import passport from "passport"
 import checkToken from "../middlewares/token.js"
 
@@ -21,6 +21,7 @@ router.get("/users", getUsers)
 router.patch("/setadmin" , checkToken , setAdmin)
 router.patch("/revokeadmin" , checkToken , revokeAdmin)
 router.delete("/users/delete" , checkToken , deleteUser)
+router.put("/items/edit" , checkToken , editItem)
 router.put("/inventory/edit" , checkToken , editInventory)
 router.get("/category" , getCategory)
 router.get("/inventory/common", getInventories)
@@ -44,6 +45,7 @@ router.get("/inventory/:id", getAccessibleInventories)
 router.get("/inventory/:inventoryid" , getInventory)
 router.get("/owninventory/:id" , getOwnInventories)
 router.get("/item/:id" , getItem)
+router.delete("/items/delete/:itemid" , checkToken , deleteElement)
 router.get("/helloworld" , helloworld)
 
 export default router
