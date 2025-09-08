@@ -268,7 +268,8 @@ export async function createElements(req , res) {
         const { inventoryid , image , fieldvalue1 , fieldvalue2 , fieldvalue3 , createdby , ownername} = req.body
         const inv = await prisma.inventory.findFirst({where: {inventoryid: inventoryid}})
         console.log(inv.customid)
-        const customID = generateCustomID(inv.customid)
+        let customID = generateCustomID(inv.customid)
+        JSON.stringify(customID)
         const item = await prisma.items.create({data: {inventoryid: inventoryid , image: image , fieldvalue1: fieldvalue1 , fieldvalue2: fieldvalue2 , fieldvalue3: fieldvalue3 , createdby: createdby , customid: customID , ownername: ownername }, include: {users: {select: {id: true}}}})
         res.json(item)
     } catch (error) {
@@ -349,7 +350,6 @@ function generateExampleCustomID(format , formatValues) {
 }
 function generateCustomID(format) {
     const gathered = []
-    format = JSON.parse(format)
     for (let i = 0; i < format.length; i++) {
         if (format[i] == '20-bit Random') {
             const block = crypto.randomBytes(2.5).toString('hex')
