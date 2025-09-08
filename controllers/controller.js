@@ -281,7 +281,7 @@ export async function getItem(req ,res) {
     try {
         const {id} = req.params
         console.log(id)
-        const item = await prisma.items.findFirst({where: {id: id}})
+        const item = await prisma.items.findFirst({where: {id: id.trim()}})
         console.log(item)
         res.json(item)
     } catch (error) {
