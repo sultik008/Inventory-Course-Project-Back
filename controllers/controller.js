@@ -350,6 +350,7 @@ function generateExampleCustomID(format , formatValues) {
 }
 function generateCustomID(format) {
     const gathered = []
+    format = JSON.parse(format)
     for (let i = 0; i < format.length; i++) {
         if (format[i] == '20-bit Random') {
             const block = crypto.randomBytes(2.5).toString('hex')
