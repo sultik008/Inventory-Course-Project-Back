@@ -280,7 +280,9 @@ export async function createElements(req , res) {
 export async function getItem(req ,res) {
     try {
         const {id} = req.params
+        console.log(id)
         const item = await prisma.items.findFirst({where: {id: id}})
+        console.log(item)
         res.json(item)
     } catch (error) {
         console.log(error)
